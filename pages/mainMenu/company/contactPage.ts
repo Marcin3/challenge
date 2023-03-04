@@ -57,9 +57,9 @@ export interface User {
   firstName: string;
   lastName: string;
   yourBusinessEmail: string;
-  mobilePhoneNumber: number;
+  mobilePhoneNumber: string;
   yourOrganization: string;
-  countryRegion: "Austria" | "Poland";
+  countryRegion: string;
   descriptionField: string;
   marketingOffersAndUpdates: boolean;
 }
