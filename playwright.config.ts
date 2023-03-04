@@ -1,5 +1,8 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const config: PlaywrightTestConfig = {
   testDir: "./tests",
@@ -20,7 +23,7 @@ const config: PlaywrightTestConfig = {
 
   use: {
     actionTimeout: 0,
-    baseURL: "https://mostly.ai/",
+    baseURL: process.env.BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on",
