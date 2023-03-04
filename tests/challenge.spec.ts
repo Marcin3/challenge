@@ -10,13 +10,13 @@ import { SyntheticDataMenuPage } from "../pages/mainMenu/syntheticDataMenuPage";
 test("Step 1", async ({ page }) => {
   const mainMenuPage = new MainMenuPage(page);
 
-  await test.step(`1. Go to page https://mostly.ai/`, async () => {
+  await test.step(`Given User is on page https://mostly.ai/`, async () => {
     await page.goto("");
     expect(page).toHaveURL("");
     await acceptCookies(page);
   });
 
-  await test.step(`2. Verify if following bookmarks are being visible – Platform, Synthetic data, Resources, Company`, async () => {
+  await test.step(`THen User can see following bookmarks: Platform, Synthetic data, Resources, Company`, async () => {
     await mainMenuPage.clickOnCompanyButton();
     const companyMenuPage = new CompanyMenuPage(page);
     await companyMenuPage.checkIfBookmarkCompanyIsVisible();
@@ -35,7 +35,7 @@ test("Step 1", async ({ page }) => {
   });
 });
 
-test("Step 2", async ({ page }) => {
+test("Step 2", async ({ browser, page }) => {
   const wrongWord = "sythetic";
   const mainMenuPage = new MainMenuPage(page);
 
@@ -89,6 +89,7 @@ test("Step 3", async ({ page }) => {
   });
 
   await test.step(`3. Fill following fields: First Name, Last Name,Your Business Email, Mobile Phone Number, Your Organization, Country/Region, Description Field`, async () => {
+    page.getByText("Ask us anything!").click();
     await contactPage.fillFields(user);
   });
 

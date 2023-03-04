@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from "@playwright/test";
 
 export class ContactPage {
+  private readonly askUsAnythingHeadline: Locator;
   private readonly countryRegionCombobox: Locator;
   private readonly descriptionField: Locator;
   private readonly firstNameInput: Locator;
@@ -12,6 +13,7 @@ export class ContactPage {
   private readonly yourOrganizationInput: Locator;
 
   constructor(public readonly page: Page) {
+    this.askUsAnythingHeadline = page.getByText("Ask us anything!");
     this.countryRegionCombobox = page.getByRole("combobox", {
       name: "Country/Region*",
     });
@@ -36,6 +38,7 @@ export class ContactPage {
   }
 
   async fillFields(user: User) {
+    await this.askUsAnythingHeadline.click();
     await this.firstNameInput.fill(user.firstName);
     await this.lastNameInput.fill(user.lastName);
     await this.yourBusinessEmailInput.fill(user.yourBusinessEmail);
