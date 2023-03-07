@@ -42,7 +42,7 @@ test("Search wrong word", async ({ page }) => {
 
   await test.step(`Given User is on page https://mostly.ai/`, async () => {
     await page.goto("");
-    expect(page).toHaveURL("");
+    await expect(page).toHaveURL("");
   });
 
   await test.step(`When User click the “Search” button`, async () => {
