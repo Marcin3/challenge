@@ -17,7 +17,7 @@ test("User can see bookmarks", async ({ page }) => {
     await acceptCookies(page);
   });
 
-  await test.step(`Then User can see following bookmarks: Platform, Synthetic data, Resources, Company`, async () => {
+  await test.step(`Then User can see following bookmarks: Platform, Resources, Company`, async () => {
     await mainMenuPage.clickOnCompanyButton();
     const companyMenuPage = new CompanyMenuPage(page);
     await companyMenuPage.checkIfBookmarkCompanyIsVisible();
@@ -29,10 +29,6 @@ test("User can see bookmarks", async ({ page }) => {
     await mainMenuPage.clickOnResourcesButton();
     const resourcesMenuPage = new ResourcesMenuPage(page);
     await resourcesMenuPage.checkIfBookmarkResourcesIsVisible();
-
-    await mainMenuPage.clickOnSyntheticDataButton();
-    const syntheticDataMenuPage = new SyntheticDataMenuPage(page);
-    await syntheticDataMenuPage.checkIfBookmarkSyntheticDataIsVisible();
   });
 });
 
@@ -73,7 +69,7 @@ test("User can send message using contact", async ({ page }) => {
     mobilePhoneNumber: faker.phone.number(),
     yourOrganization: "example",
     countryRegion: faker.address.country(),
-    descriptionField: "playwright test",
+    yourMessage: "playwright test",
     marketingOffersAndUpdates: true,
   };
 
@@ -89,7 +85,7 @@ test("User can send message using contact", async ({ page }) => {
     await companyMenuPage.clickContact();
   });
 
-  await test.step(`And fill following fields: First Name, Last Name,Your Business Email, Mobile Phone Number, Your Organization, Country/Region, Description Field`, async () => {
+  await test.step(`And fill following fields: First Name, Last Name,Your Business Email, Your Organization, Country/Region, Your Message Field`, async () => {
     await contactPage.fillFields(user);
   });
 

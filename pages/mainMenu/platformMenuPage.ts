@@ -5,7 +5,7 @@ export class PlatformMenuPage {
 
   constructor(public readonly page: Page) {
     this.platformOverviewButton = page.getByRole("link", {
-      name: "Platform overview",
+      name: "What is synthetic data and its benefits Introduction to synthetic data",
     });
   }
 

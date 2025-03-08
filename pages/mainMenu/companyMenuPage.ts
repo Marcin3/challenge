@@ -5,9 +5,9 @@ export class CompanyMenuPage {
 
   constructor(public readonly page: Page) {
     this.contactButton = page.getByRole("link", {
-      name: "Contact Do you have a question about synthetic data? Send us a message!",
+      name: "Contact us Do you have a question about synthetic data? Send us a message",
     });
-  }
+  } 
 
   async clickContact() {
     await this.contactButton.click();

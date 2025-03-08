@@ -5,7 +5,7 @@ export class ResourcesMenuPage {
 
   constructor(public readonly page: Page) {
     this.resourcesOverviewButton = page.getByRole("link", {
-      name: "Resources overview",
+      name: "Podcast Get insights from industry pioneers",
     });
   }
 
