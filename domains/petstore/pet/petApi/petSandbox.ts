@@ -14,7 +14,7 @@ export class PetApiSandbox {
       id,
       name,
       photoUrls: ["magicLink"],
-      status: PetStatus.available,
+      status: "available",
     };
 
     return await this.petApi.addNewPetToTheStore(pet);

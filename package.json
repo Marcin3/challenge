@@ -1,5 +1,5 @@
 {
-  "name": "mostly",
+  "name": "challenge",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,9 +11,12 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
-    "@playwright/test": "^1.28.1",
+    "@playwright/test": "^1.51.0",
     "dotenv": "^16.0.3",
     "http-status-codes": "^2.2.0",
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "challenge": "file:"
   }
 }

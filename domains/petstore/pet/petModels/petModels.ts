@@ -17,8 +17,4 @@ export interface Pet {
   status?: PetStatus;
 }
 
-export enum PetStatus {
-  available,
-  pending,
-  sold,
-}
+export type PetStatus = "available" | "pending" | "sold";
