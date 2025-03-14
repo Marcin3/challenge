@@ -1,8 +1,8 @@
 import { APIRequestContext } from "@playwright/test";
 import { PetApi } from "./petApi";
-import { Pet, PetStatus } from "../petModels/petModels";
+import { Pet } from "../petModels/petModels";
 
-export class PetApiSandbox {
+export class PetSandbox {
   private petApi: PetApi;
 
   constructor(request: APIRequestContext) {
@@ -18,6 +18,18 @@ export class PetApiSandbox {
     };
 
     return await this.petApi.addNewPetToTheStore(pet);
+  }
+
+  async expectPet(id: number, name: string): Promise<Pet> {
+    const expectedPet: Pet = {
+      id,
+      name,
+      photoUrls: ["magicLink"],
+      tags: [],
+      status: "available"
+    };
+
+    return expectedPet;
   }
 
   async findPetById(petId: number) {

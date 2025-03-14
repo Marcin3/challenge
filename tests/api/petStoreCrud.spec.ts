@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 import { StatusCodes } from "http-status-codes";
-import { PetApiSandbox } from "../../domains/petstore/pet";
+import { PetSandbox } from "../../domains/petstore/pet";
 import { Pet } from "../../domains/petstore/pet/petModels/petModels";
 
 test("Pet Crud", async ({ request }) => {
@@ -9,18 +9,33 @@ test("Pet Crud", async ({ request }) => {
   const petName = faker.name.firstName();
   const updatedPetName = faker.name.firstName();
   let createdPet: Pet;
-  const petApiSandbox = new PetApiSandbox(request);
+  const petSandbox = new PetSandbox(request);
 
   await test.step(`Create Pet with name ${petName}`, async () => {
-    const response = await petApiSandbox.addNewPetToTheStore(petId, petName);
+    const response = await petSandbox.addNewPetToTheStore(petId, petName);
     expect(
       response.status(),
       `response status should be ${StatusCodes.OK}`
     ).toBe(StatusCodes.OK);
+     const responseBody = await response.json();
+
+    expect(responseBody).toEqual(await petSandbox.expectPet(petId, petName));
   });
 
   await test.step(`Read created pet`, async () => {
-    const response = await petApiSandbox.findPetById(petId);
+    let response;
+    let attempts = 0;
+    const maxAttempts = 3;
+    
+    while (attempts < maxAttempts) {
+      response = await petSandbox.findPetById(petId);
+      if (response.status() === StatusCodes.OK) {
+        break;
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+    }
+
     expect(
       response.status(),
       `response status should be ${StatusCodes.OK}`
@@ -30,7 +45,7 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Update name of pet to ${updatedPetName}`, async () => {
-    const response = await petApiSandbox.updatePetName(
+    const response = await petSandbox.updatePetName(
       createdPet,
       updatedPetName
     );
@@ -42,7 +57,7 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Read updated pet`, async () => {
-    const response = await petApiSandbox.findPetById(petId);
+    const response = await petSandbox.findPetById(petId);
     expect(
       response.status(),
       `response status should be ${StatusCodes.OK}`
@@ -52,7 +67,7 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Delete pet`, async () => {
-    const response = await petApiSandbox.deletePet(petId);
+    const response = await petSandbox.deletePet(petId);
     expect(
       response.status(),
       `response status should be ${StatusCodes.OK}`
@@ -60,7 +75,7 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Check if pet was deleted properly`, async () => {
-    const response = await petApiSandbox.findPetById(petId);
+    const response = await petSandbox.findPetById(petId);
     expect(
       response.status(),
       `response status should be ${StatusCodes.NOT_FOUND}`
