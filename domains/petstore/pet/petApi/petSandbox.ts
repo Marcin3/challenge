@@ -40,8 +40,7 @@ export class PetSandbox {
     return this.petApi.deletePet(petId);
   }
 
-  async updatePetName(pet: Pet, petName: string) {
-    pet.name = petName;
+  async updatePet(pet: Pet) {  
     return await this.petApi.updatePet(pet);
   }
 }

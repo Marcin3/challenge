@@ -45,19 +45,35 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Update name of pet to ${updatedPetName}`, async () => {
-    const response = await petSandbox.updatePetName(
-      createdPet,
-      updatedPetName
-    );
+    const updatedPetData: Pet = {
+      ...createdPet,
+      name: updatedPetName
+    };
+    const response = await petSandbox.updatePet(updatedPetData);
 
     expect(
       response.status(),
       `response status should be ${StatusCodes.OK}`
     ).toBe(StatusCodes.OK);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual(await petSandbox.expectPet(petId, updatedPetName));
   });
 
   await test.step(`Read updated pet`, async () => {
-    const response = await petSandbox.findPetById(petId);
+    let response;
+    let attempts = 0;
+    const maxAttempts = 5;
+    
+    while (attempts < maxAttempts) {
+      response = await petSandbox.findPetById(petId);
+      const updatedPet = await response.json();
+      if (response.status() === StatusCodes.OK && updatedPet.name === updatedPetName) {
+        break;
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+    }
+
     expect(
       response.status(),
       `response status should be ${StatusCodes.OK}`
