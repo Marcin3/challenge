@@ -4,11 +4,11 @@ import { StatusCodes } from "http-status-codes";
 import { PetSandbox } from "../../domains/petstore/pet";
 import { Pet } from "../../domains/petstore/pet/petModels/petModels";
 
-async function waitForResponse(
+const waitForResponse = async (
   action: () => Promise<any>,
   condition: (response: any) => boolean | Promise<boolean>,
   maxAttempts: number = 3
-) {
+) => {
   let response;
   let attempts = 0;
   
@@ -22,7 +22,7 @@ async function waitForResponse(
   }
   
   return response;
-}
+};
 
 test("Pet Crud", async ({ request }) => {
   const petId = faker.datatype.number({ min: 1000000 });
