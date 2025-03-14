@@ -71,13 +71,15 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Read updated pet`, async () => {
+    const isPetNameUpdated = async (response: any, expectedName: string): Promise<boolean> => {
+      if (response.status() !== StatusCodes.OK) return false;
+      const pet = await response.json();
+      return pet.name === expectedName;
+    };
+
     const response = await waitForResponse(
       () => petSandbox.findPetById(petId),
-      async (response) => {
-        if (response.status() !== StatusCodes.OK) return false;
-        const pet = await response.json();
-        return pet.name === updatedPetName;
-      },
+      (response) => isPetNameUpdated(response, updatedPetName),
       5
     );
 

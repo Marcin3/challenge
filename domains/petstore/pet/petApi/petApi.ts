@@ -1,25 +1,32 @@
 import { APIRequestContext } from "@playwright/test";
+import { Pet } from "../petModels/petModels";
 
 export class PetApi {
-  constructor(private readonly request: APIRequestContext) {}
+  private readonly baseUrl: string;
 
-  async addNewPetToTheStore(data) {
-    const url = process.env.PET_STORE_URL;
-    return this.request.post(url!, { data });
+  constructor(
+    private readonly request: APIRequestContext,
+    baseUrl: string = process.env.PET_STORE_URL!
+  ) {
+    if (!baseUrl) {
+      throw new Error('PET_STORE_URL environment variable is required');
+    }
+    this.baseUrl = baseUrl;
+  }
+
+  async addNewPetToTheStore(data: Pet) {
+    return this.request.post(this.baseUrl, { data });
   }
 
   async deletePet(petId: number) {
-    const url = `${process.env.PET_STORE_URL}/${petId}`;
-    return this.request.delete(url);
+    return this.request.delete(`${this.baseUrl}/${petId}`);
   }
 
   async findPetById(petId: number) {
-    const url = `${process.env.PET_STORE_URL}/${petId}`;
-    return this.request.get(url);
+    return this.request.get(`${this.baseUrl}/${petId}`);
   }
 
-  async updatePet(data) {
-    const url = process.env.PET_STORE_URL;
-    return this.request.put(url!, { data });
+  async updatePet(data: Pet) {
+    return this.request.put(this.baseUrl, { data });
   }
 }
