@@ -4,14 +4,24 @@ import { StatusCodes } from "http-status-codes";
 import { PetSandbox } from "../../domains/petstore/pet";
 import { Pet } from "../../domains/petstore/pet/petModels/petModels";
 
+
+/**
+ * Repeatedly executes a given action until a specified condition is met or a maximum number of attempts is reached.
+ *
+ * @param action - A function that triggers the action to be executed. This function should return a promise.
+ * @param condition - A function that evaluates the response to determine if the desired condition is met.
+ *                    Should return a boolean or a promise resolving to a boolean.
+ * @param maxAttempts - The maximum number of attempts to execute the action. Defaults to 5.
+ * @returns The response from the action that satisfied the condition or the last response if the condition was not met.
+ */
 const waitForResponse = async (
   action: () => Promise<any>,
   condition: (response: any) => boolean | Promise<boolean>,
-  maxAttempts: number = 3
+  maxAttempts: number = 5
 ) => {
   let response;
   let attempts = 0;
-  
+
   while (attempts < maxAttempts) {
     response = await action();
     if (await condition(response)) {
@@ -20,7 +30,7 @@ const waitForResponse = async (
     await new Promise(resolve => setTimeout(resolve, 1000));
     attempts++;
   }
-  
+
   return response;
 };
 
@@ -42,17 +52,12 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Read created pet`, async () => {
-    const response = await waitForResponse(
-      () => petSandbox.findPetById(petId),
-      (response) => response.status() === StatusCodes.OK
-    );
-
-    expect(
-      response.status(),
-      `response status should be ${StatusCodes.OK}`
-    ).toBe(StatusCodes.OK);
-    createdPet = await response.json();
-    expect(createdPet.name).toBe(petName);
+      await expect(async () => {
+          const response = await petSandbox.findPetById(petId);
+          expect(response.status()).toBe(StatusCodes.OK);
+          createdPet = await response.json();
+          expect(createdPet.name).toBe(petName);
+      }).toPass();
   });
 
   await test.step(`Update name of pet to ${updatedPetName}`, async () => {
@@ -71,24 +76,12 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Read updated pet`, async () => {
-    const isPetNameUpdated = async (response: any, expectedName: string): Promise<boolean> => {
-      if (response.status() !== StatusCodes.OK) return false;
-      const pet = await response.json();
-      return pet.name === expectedName;
-    };
-
-    const response = await waitForResponse(
-      () => petSandbox.findPetById(petId),
-      (response) => isPetNameUpdated(response, updatedPetName),
-      5
-    );
-
-    expect(
-      response.status(),
-      `response status should be ${StatusCodes.OK}`
-    ).toBe(StatusCodes.OK);
-    const updatedPet = await response.json();
-    expect(updatedPet.name).toBe(updatedPetName);
+      await expect(async () => {
+          const response = await petSandbox.findPetById(petId);
+          expect(response.status()).toBe(StatusCodes.OK);
+          const updatedPet = await response.json();
+          expect(updatedPet.name).toBe(updatedPetName);
+      }).toPass();
   });
 
   await test.step(`Delete pet`, async () => {
@@ -100,14 +93,9 @@ test("Pet Crud", async ({ request }) => {
   });
 
   await test.step(`Check if pet was deleted properly`, async () => {
-    const response = await waitForResponse(
-      () => petSandbox.findPetById(petId),
-      (response) => response.status() === StatusCodes.NOT_FOUND
-    );
-
-    expect(
-      response.status(),
-      `response status should be ${StatusCodes.NOT_FOUND}`
-    ).toBe(StatusCodes.NOT_FOUND);
+     await expect.poll(async () => {
+      const response = await petSandbox.findPetById(petId);
+      return response.status();
+    }).toBe(StatusCodes.NOT_FOUND);
   });
 });
