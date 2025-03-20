@@ -6,7 +6,6 @@ import { CookieBoxPage } from "../../pages/cookieBoxPage";
 import { MainMenuPage } from "../../pages/mainMenuPage";
 import { PlatformMenuPage } from "../../pages/mainMenu/platformMenuPage";
 import { ResourcesMenuPage } from "../../pages/mainMenu/resourcesMenuPage";
-import { SyntheticDataMenuPage } from "../../pages/mainMenu/syntheticDataMenuPage";
 
 test("User can see bookmarks", async ({ page }) => {
   const mainMenuPage = new MainMenuPage(page);
