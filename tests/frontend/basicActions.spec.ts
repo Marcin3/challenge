@@ -1,8 +1,7 @@
 import {Page} from "@playwright/test";
 import {expect, test} from "../../pages/base";
 import {faker} from "@faker-js/faker";
-import {CompanyMenuPage} from "../../pages/mainMenu/companyMenuPage";
-import {ContactPage, User} from "../../pages/mainMenu/company/contactPage";
+import {User} from "../../pages/mainMenu/company/contactPage";
 import {CookieBoxPage} from "../../pages/cookieBoxPage";
 import {MainMenuPage} from "../../pages/mainMenuPage";
 
@@ -52,9 +51,7 @@ test("Search wrong word", async ({mainMenuPage, page}) => {
     });
 });
 
-test("User can send message using contact", async ({page}) => {
-    const contactPage = new ContactPage(page);
-    const mainMenuPage = new MainMenuPage(page);
+test("User can send message using contact", async ({companyMenuPage, contactPage, mainMenuPage, page}) => {
     const user: User = {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
@@ -74,7 +71,6 @@ test("User can send message using contact", async ({page}) => {
 
     await test.step(`When User click “Contact” item under the “Company” bookmark`, async () => {
         await mainMenuPage.clickOnCompanyButton();
-        const companyMenuPage = new CompanyMenuPage(page);
         await companyMenuPage.clickContact();
     });
 
