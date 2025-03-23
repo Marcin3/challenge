@@ -3,8 +3,8 @@ import { expect, Locator, Page } from "@playwright/test";
 export class CompanyMenuPage {
   private readonly contactButton: Locator;
 
-  constructor(public readonly page: Page) {
-    this.contactButton = page.locator('a[href="https://mostly.ai/contact"]').first();
+  constructor(private readonly page: Page) {
+    this.contactButton = this.page.locator('a[href="https://mostly.ai/contact"]').first();
   } 
 
   async clickContact() {

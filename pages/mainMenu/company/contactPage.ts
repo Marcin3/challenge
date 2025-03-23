@@ -10,15 +10,15 @@ export class ContactPage {
   private readonly yourBusinessEmailInput: Locator;
   private readonly yourOrganizationInput: Locator;
 
-  constructor(public readonly page: Page) {
-    this.countryRegionCombobox = page.getByLabel("Country/Region");
-    this.yourMessageField = page.locator('textarea[name="your-message"]')
-    this.firstNameInput = page.getByLabel("First Name");
-    this.lastNameInput = page.getByLabel("Last Name");
-    this.marketingOffersAndUpdatesCheckbox = page.locator('input[type="checkbox"]');
-    this.sendMessage = page.getByRole("button", { name: "SEND MESSAGE" });
-    this.yourBusinessEmailInput = page.getByLabel("Your Business Email");
-    this.yourOrganizationInput = page.getByLabel("Your Organization");
+  constructor(private readonly page: Page) {
+    this.countryRegionCombobox = this.page.getByLabel("Country/Region");
+    this.yourMessageField = this.page.locator('textarea[name="your-message"]')
+    this.firstNameInput = this.page.getByLabel("First Name");
+    this.lastNameInput = this.page.getByLabel("Last Name");
+    this.marketingOffersAndUpdatesCheckbox = this.page.locator('input[type="checkbox"]');
+    this.sendMessage = this.page.getByRole("button", { name: "SEND MESSAGE" });
+    this.yourBusinessEmailInput = this.page.getByLabel("Your Business Email");
+    this.yourOrganizationInput = this.page.getByLabel("Your Organization");
   }
 
   async checkMarketingOffersAndUpdatesCheckbox() {

@@ -7,18 +7,14 @@ export class MainMenuPage {
   private readonly searchButton: Locator;
   private readonly searchField: Locator;
   private readonly searchResult: Locator;
-  private readonly syntheticDataButton: Locator;
 
-  constructor(public readonly page: Page) {
-    this.companyButton = page.getByRole("button", { name: "Company" });
-    this.platformButton = page.getByRole("button", { name: "Platform" });
-    this.resourcesButton = page.getByRole("button", { name: "Resources" });
-    this.searchButton = page.getByRole("button", { name: "Open search" });
-    this.searchField = page.getByTitle("Search for:");
-    this.searchResult = page.locator("h1");
-    this.syntheticDataButton = page.getByRole("button", {
-      name: "Synthetic Data",
-    });
+  constructor(private readonly page: Page) {
+    this.companyButton = this.page.getByRole("button", { name: "Company" });
+    this.platformButton = this.page.getByRole("button", { name: "Platform" });
+    this.resourcesButton = this.page.getByRole("button", { name: "Resources" });
+    this.searchButton = this.page.getByRole("button", { name: "Open search" });
+    this.searchField = this.page.getByTitle("Search for:");
+    this.searchResult = this.page.locator("h1");
   }
 
   async clickOnCompanyButton() {
@@ -37,23 +33,20 @@ export class MainMenuPage {
     await this.searchButton.click();
   }
 
-  async clickOnSyntheticDataButton() {
-    await this.syntheticDataButton.click();
-  }
-
   async fillSearchFiled(value: string) {
     await this.searchField.fill(value);
   }
 
-  async hoverOverCompanyButton() {
-    await this.companyButton.hover();
-  }
+ async submitSearch(value?: string) {
+      const waitResponse = value && this.page.waitForResponse(res =>
+          res.url().includes(`/?s=${encodeURIComponent(value)}`) && res.status() === 200
+      );
 
-  async pressEnterButtonOnSearchFiled() {
-    await this.searchField.press("Enter");
-  }
+      await this.searchField.press("Enter");
+      if (waitResponse) await waitResponse;
+    }
 
-  async checkSearchResult(
+    async checkSearchResult(
     firstExpectedValue: string,
     secondExpectedValue: string
   ) {

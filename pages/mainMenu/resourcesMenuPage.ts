@@ -3,8 +3,8 @@ import { expect, Locator, Page } from "@playwright/test";
 export class ResourcesMenuPage {
   private readonly resourcesOverviewButton: Locator;
 
-  constructor(public readonly page: Page) {
-    this.resourcesOverviewButton = page.getByRole("link", {
+  constructor(private readonly page: Page) {
+    this.resourcesOverviewButton = this.page.getByRole("link", {
       name: "Podcast Get insights from industry pioneers",
     });
   }

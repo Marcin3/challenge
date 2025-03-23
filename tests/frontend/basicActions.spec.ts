@@ -42,7 +42,7 @@ test("Search wrong word", async ({mainMenuPage, page}) => {
     });
 
     await test.step(`And press Enter`, async () => {
-        await mainMenuPage.pressEnterButtonOnSearchFiled();
+        await mainMenuPage.submitSearch(wrongWord);
     });
 
     await test.step(`Then User can see following information: “Sorry, no results for: sythetic”`, async () => {
@@ -65,7 +65,7 @@ test("User can send message using contact", async ({companyMenuPage, contactPage
 
     await test.step(`Given User is on page https://mostly.ai/`, async () => {
         await page.goto("");
-        expect(page).toHaveURL("");
+        await expect(page).toHaveURL("");
         await acceptCookies(page);
     });
 
@@ -94,7 +94,7 @@ async function acceptCookies(page: Page) {
     const mainMenuPage = new MainMenuPage(page);
     await mainMenuPage.clickOnSearchButton();
     await mainMenuPage.fillSearchFiled("text to show cookies");
-    await mainMenuPage.pressEnterButtonOnSearchFiled();
+    await mainMenuPage.submitSearch();
     const cookieBoxPage = new CookieBoxPage(page);
     await cookieBoxPage.clickAcceptButton();
 }
