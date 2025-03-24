@@ -21,15 +21,13 @@ export class PetSandbox {
   }
 
   async expectPet(id: number, name: string): Promise<Pet> {
-    const expectedPet: Pet = {
-      id,
-      name,
-      photoUrls: ["magicLink"],
-      tags: [],
-      status: "available"
+      return {
+        id,
+        name,
+        photoUrls: ["magicLink"],
+        tags: [],
+        status: "available"
     };
-
-    return expectedPet;
   }
 
   async findPetById(petId: number) {

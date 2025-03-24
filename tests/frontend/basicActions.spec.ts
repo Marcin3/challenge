@@ -1,8 +1,7 @@
 import {Page} from "@playwright/test";
 import {expect, test} from "../../pages/base";
 import {faker} from "@faker-js/faker";
-import {CompanyMenuPage} from "../../pages/mainMenu/companyMenuPage";
-import {ContactPage, User} from "../../pages/mainMenu/company/contactPage";
+import {User} from "../../pages/mainMenu/company/contactPage";
 import {CookieBoxPage} from "../../pages/cookieBoxPage";
 import {MainMenuPage} from "../../pages/mainMenuPage";
 
@@ -43,7 +42,7 @@ test("Search wrong word", async ({mainMenuPage, page}) => {
     });
 
     await test.step(`And press Enter`, async () => {
-        await mainMenuPage.pressEnterButtonOnSearchFiled();
+        await mainMenuPage.submitSearch(wrongWord);
     });
 
     await test.step(`Then User can see following information: “Sorry, no results for: sythetic”`, async () => {
@@ -52,9 +51,7 @@ test("Search wrong word", async ({mainMenuPage, page}) => {
     });
 });
 
-test("User can send message using contact", async ({page}) => {
-    const contactPage = new ContactPage(page);
-    const mainMenuPage = new MainMenuPage(page);
+test("User can send message using contact", async ({companyMenuPage, contactPage, mainMenuPage, page}) => {
     const user: User = {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
@@ -68,13 +65,12 @@ test("User can send message using contact", async ({page}) => {
 
     await test.step(`Given User is on page https://mostly.ai/`, async () => {
         await page.goto("");
-        expect(page).toHaveURL("");
+        await expect(page).toHaveURL("");
         await acceptCookies(page);
     });
 
     await test.step(`When User click “Contact” item under the “Company” bookmark`, async () => {
         await mainMenuPage.clickOnCompanyButton();
-        const companyMenuPage = new CompanyMenuPage(page);
         await companyMenuPage.clickContact();
     });
 
@@ -98,7 +94,7 @@ async function acceptCookies(page: Page) {
     const mainMenuPage = new MainMenuPage(page);
     await mainMenuPage.clickOnSearchButton();
     await mainMenuPage.fillSearchFiled("text to show cookies");
-    await mainMenuPage.pressEnterButtonOnSearchFiled();
+    await mainMenuPage.submitSearch();
     const cookieBoxPage = new CookieBoxPage(page);
     await cookieBoxPage.clickAcceptButton();
 }
