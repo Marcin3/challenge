@@ -37,7 +37,7 @@ test("Search wrong word", async ({mainMenuPage, page}) => {
         await mainMenuPage.clickOnSearchButton();
     });
 
-    await test.step(`And type “sythetic” (wrong spelling of synthetic) in search field`, async () => {
+    await test.step(`And type ${wrongWord} (wrong spelling of synthetic) in search field`, async () => {
         await mainMenuPage.fillSearchFiled(wrongWord);
     });
 
@@ -45,7 +45,7 @@ test("Search wrong word", async ({mainMenuPage, page}) => {
         await mainMenuPage.submitSearch(wrongWord);
     });
 
-    await test.step(`Then User can see following information: “Sorry, no results for: sythetic”`, async () => {
+    await test.step(`Then User can see following information: “Sorry, no results for: ${wrongWord}”`, async () => {
         const firstPart = `Sorry, no results for:`;
         await mainMenuPage.checkSearchResult(firstPart, wrongWord);
     });

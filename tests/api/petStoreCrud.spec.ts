@@ -4,36 +4,6 @@ import { StatusCodes } from "http-status-codes";
 import { PetSandbox } from "../../domains/petstore/pet";
 import { Pet } from "../../domains/petstore/pet/petModels/petModels";
 
-
-/**
- * Repeatedly executes a given action until a specified condition is met or a maximum number of attempts is reached.
- *
- * @param action - A function that triggers the action to be executed. This function should return a promise.
- * @param condition - A function that evaluates the response to determine if the desired condition is met.
- *                    Should return a boolean or a promise resolving to a boolean.
- * @param maxAttempts - The maximum number of attempts to execute the action. Defaults to 5.
- * @returns The response from the action that satisfied the condition or the last response if the condition was not met.
- */
-const waitForResponse = async (
-  action: () => Promise<any>,
-  condition: (response: any) => boolean | Promise<boolean>,
-  maxAttempts: number = 5
-) => {
-  let response;
-  let attempts = 0;
-
-  while (attempts < maxAttempts) {
-    response = await action();
-    if (await condition(response)) {
-      break;
-    }
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    attempts++;
-  }
-
-  return response;
-};
-
 test("Pet Crud", async ({ request }) => {
   const petId = faker.datatype.number({ min: 1000000 });
   const petName = faker.name.firstName();
