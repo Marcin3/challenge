@@ -11,14 +11,14 @@ export class ContactPage {
   private readonly yourOrganizationInput: Locator;
 
   constructor(private readonly page: Page) {
-    this.countryRegionCombobox = this.page.getByLabel("Country/Region");
+    this.countryRegionCombobox = this.page.locator('input[name="your-country"]');
     this.yourMessageField = this.page.locator('textarea[name="your-message"]')
-    this.firstNameInput = this.page.getByLabel("First Name");
-    this.lastNameInput = this.page.getByLabel("Last Name");
+    this.firstNameInput = this.page.locator('input[name="your-firstname"]');
+    this.lastNameInput = this.page.locator('input[name="your-lastname"]');
     this.marketingOffersAndUpdatesCheckbox = this.page.locator('input[type="checkbox"]');
     this.sendMessage = this.page.getByRole("button", { name: "SEND MESSAGE" });
-    this.yourBusinessEmailInput = this.page.getByLabel("Your Business Email");
-    this.yourOrganizationInput = this.page.getByLabel("Your Organization");
+    this.yourBusinessEmailInput = this.page.locator('input[name="your-email"]');
+    this.yourOrganizationInput = this.page.locator('input[name="your-organization"]');
   }
 
   async checkMarketingOffersAndUpdatesCheckbox() {
