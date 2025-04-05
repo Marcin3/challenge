@@ -93,8 +93,8 @@ test("User can send message using contact", async ({companyMenuPage, contactPage
 async function acceptCookies(page: Page) {
     const mainMenuPage = new MainMenuPage(page);
     await mainMenuPage.clickOnSearchButton();
+    const cookieBoxPage = new CookieBoxPage(page);
+    await cookieBoxPage.cookiesLocatorHandler();
     await mainMenuPage.fillSearchFiled("text to show cookies");
     await mainMenuPage.submitSearch();
-    const cookieBoxPage = new CookieBoxPage(page);
-    await cookieBoxPage.clickAcceptButton();
 }
