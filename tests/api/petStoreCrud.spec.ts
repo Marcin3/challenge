@@ -17,8 +17,8 @@ test("Pet Crud", async ({ request }) => {
       response.status(),
       `response status should be ${StatusCodes.OK}`
     ).toBe(StatusCodes.OK);
-    const responseBody = await response.json();
-    expect(responseBody).toEqual(await petSandbox.expectPet(petId, petName));
+    const responseBody = await response.json() as Pet;
+    expect(responseBody).toEqual(petSandbox.expectPet(petId, petName));
   });
 
   await test.step(`Read created pet`, async () => {
@@ -41,8 +41,8 @@ test("Pet Crud", async ({ request }) => {
       response.status(),
       `response status should be ${StatusCodes.OK}`
     ).toBe(StatusCodes.OK);
-    const responseBody = await response.json();
-    expect(responseBody).toEqual(await petSandbox.expectPet(petId, updatedPetName));
+    const responseBody: Pet = await response.json() as Pet;
+    expect(responseBody).toEqual(petSandbox.expectPet(petId, updatedPetName));
   });
 
   await test.step(`Read updated pet`, async () => {
