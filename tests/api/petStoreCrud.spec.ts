@@ -25,7 +25,7 @@ test("Pet Crud", async ({ request }) => {
       await expect(async () => {
           const response = await petSandbox.findPetById(petId);
           expect(response.status()).toBe(StatusCodes.OK);
-          createdPet = await response.json();
+          createdPet = await response.json() as Pet;
           expect(createdPet.name).toBe(petName);
       }).toPass();
   });
