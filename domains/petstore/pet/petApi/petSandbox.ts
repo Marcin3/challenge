@@ -1,6 +1,7 @@
 import {APIRequestContext} from "@playwright/test";
 import {PetApi} from "./petApi";
 import {Pet} from "../petModels/petModels";
+import {PetBuilder} from "../petModels/petBuilder";
 
 export class PetSandbox {
     private petApi: PetApi;
@@ -10,24 +11,13 @@ export class PetSandbox {
     }
 
     async addNewPetToTheStore(id: number, name: string) {
-        const pet: Pet = {
-            id,
-            name,
-            photoUrls: ["magicLink"],
-            status: "available",
-        };
+        const pet: Pet = new PetBuilder().withId(id).withName(name).build();
 
         return await this.petApi.addNewPetToTheStore(pet);
     }
 
     expectPet = (id: number, name: string): Pet => {
-        return {
-            id,
-            name,
-            photoUrls: ["magicLink"],
-            tags: [],
-            status: "available"
-        };
+        return new PetBuilder().withId(id).withName(name).build();
     }
 
     async findPetById(petId: number) {
