@@ -1,9 +1,9 @@
 import {test as base} from "@playwright/test"
-import {CompanyMenuPage} from "./mainMenu/companyMenuPage";
-import {ResourcesMenuPage} from "./mainMenu/resourcesMenuPage";
-import {MainMenuPage} from "./mainMenuPage";
-import {PlatformMenuPage} from "./mainMenu/platformMenuPage";
-import {ContactPage} from "./mainMenu/company/contactPage";
+import {CompanyMenuPage} from "../mainMenu/companyMenuPage";
+import {ResourcesMenuPage} from "../mainMenu/resourcesMenuPage";
+import {MainMenuPage} from "../mainMenuPage";
+import {PlatformMenuPage} from "../mainMenu/platformMenuPage";
+import {ContactPage} from "../mainMenu/company/contactPage";
 
 type MyFixtures = {
     companyMenuPage: CompanyMenuPage,
