@@ -1,5 +1,5 @@
 import {Page} from "@playwright/test";
-import {expect, test} from "../../pages/base";
+import {expect, test} from "../../pages/fixtures/base";
 import {faker} from "@faker-js/faker";
 import {User} from "../../pages/mainMenu/company/contactPage";
 import {CookieBoxPage} from "../../pages/cookieBoxPage";
